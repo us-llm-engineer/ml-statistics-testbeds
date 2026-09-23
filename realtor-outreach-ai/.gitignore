@@ -1,0 +1,21 @@
+# Environments
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# LLM response cache (regenerates on first run; not needed to review the project)
+data/llm_cache/
+
+# Internal planning notes -- not part of the published project
+commits/
+nlm/
+research/briefs/
+research/reread.py
+research/reread_commands.sh
+research/notebook-research-context.md
+research/realtor-outreach-ai-research-log.md
+
+# OS / editor cruft
+.DS_Store
+*.swp

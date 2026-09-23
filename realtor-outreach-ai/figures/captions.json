@@ -1,0 +1,32 @@
+{
+  "nb1-02-toc-rate-weights.png": {
+    "notebook": "notebooks/01_research_foundations.ipynb",
+    "cell_index": 9,
+    "caption": "AUTOC/Qini weight functions w_alpha(t) and the TOC curve they integrate, with the area shaded."
+  },
+  "nb1-05-k-draw-attenuation.png": {
+    "notebook": "notebooks/01_research_foundations.ipynb",
+    "cell_index": 27,
+    "caption": "tau-hat/tau vs number of LLM draws K, Monte Carlo estimate against the theoretical R_K attenuation curve."
+  },
+  "nb2-01-segment-uplift-template.png": {
+    "notebook": "notebooks/02_project_walkthrough_part1.ipynb",
+    "cell_index": 9,
+    "caption": "Segment x (baseline booking, call uplift) bars next to the template x segment reply-rate heatmap."
+  },
+  "nb2-02-llm-fit-scatter.png": {
+    "notebook": "notebooks/02_project_walkthrough_part1.ipynb",
+    "cell_index": 19,
+    "caption": "LLM lead-fit score vs true baseline booking rate and vs true call uplift, colored by latent segment."
+  },
+  "nb3-02-toc-bootstrap-forest.png": {
+    "notebook": "notebooks/03_project_walkthrough_part2.ipynb",
+    "cell_index": 24,
+    "caption": "TOC curves with bootstrap bands per scoring rule, and the AUTOC/Qini forest plot with population-truth markers."
+  },
+  "nb3-04-power-sweep.png": {
+    "notebook": "notebooks/03_project_walkthrough_part2.ipynb",
+    "cell_index": 33,
+    "caption": "KPT and RATE-AUTOC rejection rate vs randomized-pilot size (3,000 / 10,000 / 30,000 leads)."
+  }
+}
