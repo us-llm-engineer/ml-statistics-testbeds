@@ -1,0 +1,17 @@
+# Generated artifacts and API/model caches (recreated by the notebooks)
+data/
+
+# Internal research, query history, and release-planning state
+commits/
+nlm/
+research/
+.push-scheduler/
+graphify-out/
+
+# Local environments / notebook and editor artifacts
+.venv/
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.DS_Store
+*.swp

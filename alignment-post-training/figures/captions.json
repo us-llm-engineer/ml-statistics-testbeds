@@ -1,0 +1,20 @@
+[
+  {"file": "nb1-01-three-teachers.png", "notebook": "01_research_foundations.ipynb", "cell": 15,
+   "caption": "Ground-truth expected reward under three teachers over simulated gradient-flow time: reward model A has perfect ranking accuracy but stalls near its starting value; the poorly-ranked B reaches the target fastest; the oracle (optimizing ground truth directly) is fastest overall. Accuracy alone does not predict teaching speed (Theorem 5)."},
+  {"file": "nb1-02-fig2ab-misspecification.png", "notebook": "01_research_foundations.ipynb", "cell": 23,
+   "caption": "Win rate vs. KL divergence under four reward-misspecification maps (Theorem 1's closed form). Left: getting the top of the quality range wrong costs win rate fast as KL grows; getting only the bottom wrong barely matters. Right: Paper 3's actual Figure 2b sweep, by top-correctly-ranked fraction."},
+  {"file": "nb1-03-theorem5-displacement.png", "notebook": "01_research_foundations.ipynb", "cell": 30,
+   "caption": "Four views of one likelihood-displacement instance: Theorem 5's linear fit (R^2=1.0000) between a token's unembedding alignment and its probability-mass gain; the DPO loss falling in step with ln pi(y+); the token that absorbs the displaced mass; and the frozen-prompt-embedding control, where ln pi(y+) never decreases."},
+  {"file": "nb2-01-rubric-reliability.png", "notebook": "02_project_walkthrough_part1.ipynb", "cell": 15,
+   "caption": "Left: mean rubric reward by response tier, coarse vs. sharp -- coarse rubrics compress the great/excellent gap the sharp rubric separates. Middle: per-criterion verifier agreement with latent truth, judgment criteria below objective ones. Right: true vs. noisy rubric reward across 150 sampled responses."},
+  {"file": "nb2-02-preference-pairs.png", "notebook": "02_project_walkthrough_part1.ipynb", "cell": 24,
+   "caption": "Left: preference-pair counts by construction type. Middle: annotator agreement is visibly lower on ambiguous tasks. Right: the quality gap within a pair is smallest for near-duplicate and verification-added pairs -- by design the hardest, most CHES-relevant cases."},
+  {"file": "nb3-01-reward-variance.png", "notebook": "03_project_walkthrough_part2.ipynb", "cell": 7,
+   "caption": "On-policy reward variance vs. task difficulty (p_solve), 60 tasks, against the 4*p(1-p) binary-reward shape reference. The correlation with the idealised shape is positive but only marginally significant (rho=0.226, p=0.082) -- a real rubric reward's variance is driven by more than correctness difficulty alone."},
+  {"file": "nb3-02-tail-accuracy.png", "notebook": "03_project_walkthrough_part2.ipynb", "cell": 11,
+   "caption": "Rubric pairwise accuracy vs. latent true_reward, split by high/low reward region and coarse/sharp rubric style. The pooled gap is small and the two styles disagree on direction -- this synthetic rubric does not reproduce Paper 3's much larger tail-accuracy gap."},
+  {"file": "nb3-03-ches-by-pairtype.png", "notebook": "03_project_walkthrough_part2.ipynb", "cell": 15,
+   "caption": "Mean CHES percentile rank by preference-pair type, on real text scored by a real small model. Near-duplicate and verification-added pairs -- built as deliberately minimal edits -- rank well above the corpus median, exactly the pattern Paper 1's screening protocol flags."},
+  {"file": "nb3-04-dpo-robustness.png", "notebook": "03_project_walkthrough_part2.ipynb", "cell": 23,
+   "caption": "A small (n=8), cheap multi-step robustness check, prototyped on a Colab T4 GPU: left, each pair's ln pi(y+) trajectory by CHES quartile; right, the CHES-vs-growth Spearman correlation recomputed at each checkpoint, negative throughout (matching the sign of the notebook's own well-powered n=32 single-step result) though not independently significant at this small n."}
+]
