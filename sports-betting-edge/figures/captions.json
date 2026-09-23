@@ -1,0 +1,99 @@
+[
+  {
+    "file": "nb1-01-multiplicity.png",
+    "notebook": "01_research_foundations.ipynb",
+    "cell": 6,
+    "section": "1. Why naive backtests lie (derived here)",
+    "titles": [
+      "Family-wise false-positive chance [toy simulation]",
+      "Selection inflates the best statistic [toy simulation]"
+    ],
+    "caption": "Left panel: x is the number $K$ of candidate signals with no real edge (log scale); y is the probability that at least one of them passes a naive $|z|>1.96$ screen. The black curve is $1-0.95^K$ and the dots are the Monte Carlo estimates; they coincide. The red line at 0.05 is what a single test promises; by $K=40$ the naive screen has an 87% chance of producing a \"winner\" from pure noise. The gre"
+  },
+  {
+    "file": "nb1-04-elond-fdr.png",
+    "notebook": "01_research_foundations.ipynb",
+    "cell": 29,
+    "section": "4. SCREEN: online FDR control with e-LOND (Xu and Ramdas)",
+    "titles": [
+      "e-LOND FDR under three dependence structures [toy]",
+      "Worst case: the guarantee is sharp [toy, derived from App. C]",
+      "Power at alpha=0.1: e-LOND dominates [toy]"
+    ],
+    "caption": "Left panel: x is the hypothesis index $t$ (the order in which signals were registered), y the false discovery rate of e-LOND at that $t$ (mean false discovery proportion over 500 trials), $\\alpha=0.1$, $\\mu_1=3$, for three dependence structures. All curves sit far below the red $\\alpha$ line, as the paper reports for its own simulations (\"well below the desired level\"); dependence does not break t"
+  },
+  {
+    "file": "nb2-01-simulator.png",
+    "notebook": "02_mock_project_part1_build.ipynb",
+    "cell": 11,
+    "section": "3. The simulator (derived here)",
+    "titles": [
+      "Planted longshot mispricing (derived here)",
+      "What a plain backtest sees: the look-ahead bug ranks first"
+    ],
+    "caption": "*Left panel.* The x-axis is the de-margined market probability, grouped into eight price bands (10 pooled simulated worlds); the y-axis is how far the true win probability sits above the market, in percentage points. The bars are the exact mean of $r-m^{\\text{devig}}$; the dots with error bars are what a bettor could estimate from realised outcomes (mean of $y-m^{\\text{devig}}$, $\\pm 2$ standard e"
+  },
+  {
+    "file": "nb2-04-baseline-audit.png",
+    "notebook": "02_mock_project_part1_build.ipynb",
+    "cell": 28,
+    "section": "6. Baseline audit: the naive pipeline against the known truth",
+    "titles": [
+      "Naive pipeline: false-discovery proportion per world",
+      "What the naive registry contains (average world)",
+      "Power by class (95% bootstrap intervals over worlds)",
+      "ROI optimism, one dot per world"
+    ],
+    "caption": "*Top left: false-discovery proportion per world.* Each bar counts worlds; the dashed line is the AC1 target of 10% and the solid line the mean over worlds. Mass to the right of the dashed line means the client's published registry is polluted with signals that are not edges; the tall bars at 0 are worlds where the published set happened to be clean. *Top right: what gets published, by class.* Bars"
+  },
+  {
+    "file": "nb3-01-prove-showcase.png",
+    "notebook": "03_mock_project_part2_prove_screen_combine.ipynb",
+    "cell": 10,
+    "section": "3. Prove: anytime-valid evidence that a signal beats the market",
+    "titles": [
+      "Genuine edge (form_02): the CS brackets the truth",
+      "Look-ahead signal (form_16): void on the backtest",
+      "The e-process view of the same evidence"
+    ],
+    "caption": "*(showcase world; three panels)* *Left: a genuine edge on the live seasons.* The x-axis is live games after the backtest (seasons 13-30); the y-axis is the mean Brier gain over the market, in units of $10^{-4}$. The black line is the exact running gap $\\Delta_t$ (only the simulator knows it), the thin blue line is the running estimate $\\hat\\Delta_t$, and the shaded band is the 95% confidence seque"
+  },
+  {
+    "file": "nb3-03-screen-registry.png",
+    "notebook": "03_mock_project_part2_prove_screen_combine.ipynb",
+    "cell": 16,
+    "section": "4. Screen: a registry that controls the false-discovery rate and survives the look-ahead bug",
+    "titles": [
+      "AC1: false discoveries among published signals",
+      "AC2: the look-ahead signal",
+      "The price of the guarantee: power by class",
+      "Two-stage registry: power against the live horizon"
+    ],
+    "caption": "*(four panels; 200 worlds)* *Top left: false-discovery proportion by registry* (mean over worlds, bars with 95% bootstrap intervals, window truth); the dashed line is the AC1 target of 10%. *Top right: how often the look-ahead signal is published* (bars, Wilson intervals); the dashed line is the AC2 target of 1%. The naive registry publishes the bug almost always; a backtest-only e-LOND publishes "
+  },
+  {
+    "file": "nb3-05-monitor.png",
+    "notebook": "03_mock_project_part2_prove_screen_combine.ipynb",
+    "cell": 24,
+    "section": "6. Monitor: flagging an edge that has stopped working",
+    "titles": [
+      "Time to flag the decaying edge (200 worlds)",
+      "The restart trap: false alarms on a stable edge",
+      "Decaying signal (form_05), showcase world"
+    ],
+    "caption": "*(three panels)* *Left: how fast each monitor flags the decay.* The x-axis is games after the decay onset (start of season 5); the y-axis is the share of the 200 worlds in which the decaying signal has been flagged by then. The dashed line is the AC4 window of 3,690 games. The valid monitors are still near zero at that line: the block monitor essentially never fires, and the full-history CS flags "
+  },
+  {
+    "file": "nb3-07-scorecard.png",
+    "notebook": "03_mock_project_part2_prove_screen_combine.ipynb",
+    "cell": 32,
+    "section": "8. The scorecard: four acceptance criteria against the naive baseline",
+    "titles": [
+      "AC1: false-discovery proportion",
+      "AC2: look-ahead signal published",
+      "AC3: CS lower end of the combined forecast",
+      "AC4: decay flagged in 3,690 games"
+    ],
+    "caption": "*(four panels, one per acceptance criterion; red: the client's baseline, green: this pipeline, dashed line: the criterion)* AC1 (mean false-discovery proportion) and AC2 (share of worlds in which the look-ahead signal is published) are *lower is better*; AC3 (mean lower end of the 95% interval for the combined forecast's gain over the market, in units of $10^{-4}$) and AC4 (share of worlds in whic"
+  }
+]
