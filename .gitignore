@@ -1,0 +1,12 @@
+# This repo root sits one level above several unrelated project folders.
+# Only the portfolio projects listed below (and this README) are tracked here.
+/*
+!/realtor-outreach-ai/
+!/nlp-job/
+!/face-redaction/
+!/alignment-post-training/
+!/growth-experiments/
+!/idp-fintech/
+!/sports-betting-edge/
+!/README.md
+!/.gitignore
