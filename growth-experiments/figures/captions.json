@@ -1,0 +1,69 @@
+[
+  {
+    "file": "nb1-01-lindon-exact-cs.png",
+    "notebook": "01_research_foundations.ipynb",
+    "cell": 12,
+    "section": "2. Lindon et al.'s exact sequential t-test and confidence sequence (Sections 2 & 4)",
+    "titles": [
+      "G_n rejection rate vs n",
+      "Delayed start: CS width multiplier vs n (alpha=0.05)"
+    ],
+    "caption": "*Left panel* — rejection rate vs. sample size n for the g-prior e-process G_n under the null (δ=0, flat near/below α=0.05) and under an alternative (δ=0.2, g=100, α=0.01), rising toward 1 as n grows past n*=1785 (dashed vertical line): this is the \"power-1, eventually always rejects\" property (q1: Theorem 4.2) traded for \"may take longer…"
+  },
+  {
+    "file": "nb1-02-persson-attenuation.png",
+    "notebook": "01_research_foundations.ipynb",
+    "cell": 35,
+    "section": "5. Persson et al.: when can LLM-simulated outcomes stand in for humans?",
+    "titles": [
+      "Calibrated estimate vs K",
+      "Falsification test power vs surrogacy violation",
+      "Prop 4: bound vs actual under a comparability shift"
+    ],
+    "caption": "*Left* — calibrated-estimate vs. K (replication count) for the Proposition-3 attenuation sweep, with the empirical mean overlaid on the theoretical R_K curve: more LLM draws per unit buys back attenuation bias, at the cost of more LLM calls. *Middle* — the falsification test's rejection rate vs. the size of a direct (surrogacy-violating)…"
+  },
+  {
+    "file": "nb2-01-synthetic-traffic.png",
+    "notebook": "02_project_walkthrough_part1.ipynb",
+    "cell": 9,
+    "section": "1. Synthetic SaaS traffic and funnel with known latent truth (derived here)",
+    "titles": [
+      "Daily visitors by channel",
+      "True signup rate by channel (95% Wilson CI)"
+    ],
+    "caption": "Left panel: daily visitor volume by channel over the 90-day window, showing the weekend dip built into `DOW_MULT`. Right panel: the *true* signup rate by channel among humans (bots excluded, since their true conversion is 0 by construction) with a derived-here 95% Wilson interval per channel -- narrower channels (more traffic) get tighter…"
+  },
+  {
+    "file": "nb2-02-baseline-audit.png",
+    "notebook": "02_project_walkthrough_part1.ipynb",
+    "cell": 27,
+    "section": "4. The founder's current practice: a baseline audit (q4, q11; the peeking policy is derived here)",
+    "titles": [
+      "E2 (A/A): false-positive rate vs day",
+      "Outcome class per experiment",
+      "Unit-level E1 realization"
+    ],
+    "caption": "Top-left: E2's cumulative false-positive rate as a function of day -- the \"daily peek\" line is the fraction of Monte Carlo replications that have *ever* crossed p<0.05 by day d (monotonically rising, ending well above 5%); the \"single look\" line is the fraction that would be significant if you only ever evaluated on day d itself (should h…"
+  },
+  {
+    "file": "nb3-01-measure-cs.png",
+    "notebook": "03_project_walkthrough_part2.ipynb",
+    "cell": 31,
+    "section": "3.3 Claim: stopping \"when the CS excludes 0\" keeps the false-alarm rate at alpha, and the price is width (E2 A/A and E1)",
+    "titles": [
+      "How fast the band narrows at ~270 visitors/day",
+      "What covariate adjustment buys"
+    ],
+    "caption": "*Left* -- one typical replication (the one whose day-90 estimate is the median; not cherry-picked). x = day, y = treatment-minus-control signup rate per visitor, clipped to +-0.03. The tan band is the unadjusted CS, the orange band the adjusted CS (they nearly coincide), the orange line the adjusted estimate, the green horizontal line the…"
+  },
+  {
+    "file": "nb3-02-iterate-mad.png",
+    "notebook": "03_project_walkthrough_part2.ipynb",
+    "cell": 56,
+    "section": "4.a Main grid: does MAD earn its keep on a 4-arm, 60-day, low-traffic test? (q6, q11)",
+    "titles": [
+      "Signups gained by letting MAD shift traffic (K=4 arms, 300 visitors/day)"
+    ],
+    "caption": "One panel per slate. *x-axis*: day of the 60-day test. *y-axis*: cumulative signups gained **relative to the Bernoulli design** (a fixed 25% of traffic to each of the four arms), averaged over 300 replications; the blue horizontal line at 0 is Bernoulli itself and the shaded bands are +/- 2 Monte-Carlo standard errors of the difference. T…"
+  }
+]

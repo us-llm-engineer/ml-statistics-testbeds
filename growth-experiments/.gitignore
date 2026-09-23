@@ -1,0 +1,17 @@
+# Local environments and regenerable research/runtime artifacts.
+.venv/
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+data/
+nlm/
+research/
+
+# Release-planning machinery stays local to this shared checkout.
+commits/
+.push-scheduler/
+
+# Local analysis indexes and editor cruft.
+graphify-out/
+.DS_Store
+*.swp
