@@ -1,0 +1,12 @@
+# Regenerable, private, or machine-local project state.
+data/
+commits/
+nlm/
+research/
+.push-scheduler/
+.venv/
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.DS_Store
+*.swp

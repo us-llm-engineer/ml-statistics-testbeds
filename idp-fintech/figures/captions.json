@@ -1,0 +1,14 @@
+[
+  {"file": "nb1-01-guarantee-zoo.png", "notebook": "01_research_foundations.ipynb", "cell": 5,
+   "caption": "Five guarantees on two axes: expectation vs. PAC, and field vs. document unit -- they are not the same promise."},
+  {"file": "nb1-05-validity-ladder.png", "notebook": "01_research_foundations.ipynb", "cell": 44,
+   "caption": "Toy validity ladder: coverage vs. violation rate from the add-one rule down to Gurram's PAC tiers, under clustering."},
+  {"file": "nb2-02-corpus.png", "notebook": "02_project_walkthrough_part1.ipynb", "cell": 9,
+   "caption": "The synthetic corpus: 3,500 documents across four fintech types, with deliberately hard, definition-ambiguous cases."},
+  {"file": "nb2-07-baseline-audit.png", "notebook": "02_project_walkthrough_part1.ipynb", "cell": 44,
+   "caption": "The client's likely current policy (confidence >= 0.9), audited: naive vs. document-cluster-aware error intervals."},
+  {"file": "nb3-04-cfbh-document.png", "notebook": "03_project_walkthrough_part2.ipynb", "cell": 30,
+   "caption": "cfBH applied at the document unit: which document types actually get auto-posted, and cfBH's FDR is marginal, not per-type."},
+  {"file": "nb3-07-shift.png", "notebook": "03_project_walkthrough_part2.ipynb", "cell": 59,
+   "caption": "A frozen threshold breaks on next month's new vendor templates; a few hundred labelled shift documents restore it."}
+]
