@@ -1,0 +1,3 @@
+#### Cost inputs for "cheapest valid"
+
+Choosing the cheapest configuration in Lambda-hat needs a cost per configuration. All of this is **derived here**: none of the three papers covers cost minimisation among valid configurations `[facered-q12 (d)]`. The throughput comes from the smoke test of Notebook 2 (decode, 4K detection and encode speeds on this machine's CPU), which is **measured** with several-fold run-to-run variance on a shared VM. The GPU speed-up and the CPU and GPU prices per hour are **assumed** constants you must replace with vendor quotes and your own measurements. In this model cost depends on the stride only (a strided pipeline detects on fewer frames), so stride is the only lever that lowers cost within the grid.

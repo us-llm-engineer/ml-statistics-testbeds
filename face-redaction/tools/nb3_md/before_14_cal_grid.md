@@ -1,0 +1,3 @@
+**Open CAL and run LTT.** For each target set the procedure is: path from TUNE, single-start fixed-sequence test on CAL at delta = 0.10 with the max-p of the two risks. In production only the configurations the walk *visits* would be run on CAL; here all 58 are evaluated up front because 3(d) re-uses them. The printed "p-values evaluated for N configs" is the number the walk actually needed.
+
+Both T1 and T2-v1 are tested on this same split (CAL1), each at level delta; the outputs of an empty set (abstain) are reported as such, and three CAL point estimates closest to the targets are shown for orientation only. They are **not** certified and must not be read as results.
