@@ -1,0 +1,14 @@
+# LLM response cache (regenerates on first run; not needed to review the project)
+data/llm_cache/
+
+# Internal planning notes -- not part of the published project
+commits/
+nlm/
+research/
+
+# Notebook checkpoints / editor cruft
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.DS_Store
+*.swp

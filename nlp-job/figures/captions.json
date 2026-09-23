@@ -1,0 +1,32 @@
+{
+  "nb1-04-peeking-vs-betting.png": {
+    "notebook": "notebooks/01_research_foundations.ipynb",
+    "cell_index": 18,
+    "caption": "A BARGAIN/PPRM betting-wealth path crossing its certification line, next to the same anytime-valid statistic vs. naive repeated-CI peeking: peeking inflates false rejections from ~3.5% at one look to 19.1% after 40 looks, the betting statistic stays at 3.3%."
+  },
+  "nb1-07-pprm-drift-monitor.png": {
+    "notebook": "notebooks/01_research_foundations.ipynb",
+    "cell_index": 32,
+    "caption": "PPRM's harmful-shift monitor: a running-risk stream with SRM/PPRM lower bounds, time-to-alarm by predictor quality, null false-alarm control, and the analytic tau_PP/tau_S delay-ratio heatmap with Proposition A.1's boundary overlaid."
+  },
+  "nb2-01-rule-tier-diagnostics.png": {
+    "notebook": "notebooks/02_project_walkthrough_part1.ipynb",
+    "cell_index": 9,
+    "caption": "Rule-tier decision (pos/neg/unresolved) by latent class, next to the rule-score histogram split by true label -- shows exactly where the keyword taxonomy can and can't separate substantive GenAI work from decoration."
+  },
+  "nb2-02-boundary-sweep.png": {
+    "notebook": "notebooks/02_project_walkthrough_part1.ipynb",
+    "cell_index": 30,
+    "caption": "Pipeline error rate vs. share of postings routed to the LLM, swept over the rule threshold hi=1..12 -- a measured cost/accuracy curve, with the notebook's own hi=4 setting marked."
+  },
+  "nb3-02-bargain-certification.png": {
+    "notebook": "notebooks/03_project_walkthrough_part2.ipynb",
+    "cell_index": 6,
+    "caption": "Which cascade thresholds BARGAIN can certify (rules' agreement with the LLM vs. the agreement required for T=0.9, delta=0.1), and the resulting accuracy of four routing policies against both the LLM oracle and the known truth."
+  },
+  "nb3-05-pprm-harmful-vs-benign.png": {
+    "notebook": "notebooks/03_project_walkthrough_part2.ipynb",
+    "cell_index": 18,
+    "caption": "PPRM applied to the real pipeline: a harmless buzzword wave never crosses the alarm threshold, while a simulated LLM-tier outage is caught in every simulated stream, faster than a labels-only monitor."
+  }
+}
