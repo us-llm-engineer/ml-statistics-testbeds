@@ -1,14 +1,14 @@
 [
   {
-    "file": "nb1-01-multiplicity.png",
-    "notebook": "01_research_foundations.ipynb",
-    "cell": 6,
-    "section": "1. Why naive backtests lie (derived here)",
+    "file": "nb4-01-mlb-reproduction.png",
+    "notebook": "04_paper_reproductions.ipynb",
+    "cell": 5,
+    "section": "1. Choe and Ramdas on MLB: Table 4a, Figure 11 and the e-value",
     "titles": [
-      "Family-wise false-positive chance [toy simulation]",
-      "Selection inflates the best statistic [toy simulation]"
+      "Choe and Ramdas, MLB 2010-2019: 538 vs Vegas",
+      "Figure 11: ten pairwise intervals"
     ],
-    "caption": "Left panel: x is the number $K$ of candidate signals with no real edge (log scale); y is the probability that at least one of them passes a naive $|z|>1.96$ screen. The black curve is $1-0.95^K$ and the dots are the Monte Carlo estimates; they coincide. The red line at 0.05 is what a single test promises; by $K=40$ the naive screen has an 87% chance of producing a \"winner\" from pure noise. The gre"
+    "caption": "Left: the 95% confidence sequence for FiveThirtyEight minus Vegas on 25,165 MLB games separates from zero at game 9,891 (paper: about 10,000). Right: all ten pairwise intervals against the paper's printed values."
   },
   {
     "file": "nb1-04-elond-fdr.png",
@@ -81,12 +81,12 @@
       "The restart trap: false alarms on a stable edge",
       "Decaying signal (form_05), showcase world"
     ],
-    "caption": "*(three panels)* *Left: how fast each monitor flags the decay.* The x-axis is games after the decay onset (start of season 5); the y-axis is the share of the 200 worlds in which the decaying signal has been flagged by then. The dashed line is the AC4 window of 3,690 games. The valid monitors are still near zero at that line: the block monitor essentially never fires, and the full-history CS flags "
+    "caption": "No valid monitor flags the decaying edge within the 3,690-game target; the full-history confidence sequence flags 57% of worlds within 12 seasons, and restarting a test at a data-chosen point inflates false alarms on stable edges."
   },
   {
     "file": "nb3-07-scorecard.png",
     "notebook": "03_mock_project_part2_prove_screen_combine.ipynb",
-    "cell": 32,
+    "cell": 34,
     "section": "8. The scorecard: four acceptance criteria against the naive baseline",
     "titles": [
       "AC1: false-discovery proportion",
@@ -94,6 +94,6 @@
       "AC3: CS lower end of the combined forecast",
       "AC4: decay flagged in 3,690 games"
     ],
-    "caption": "*(four panels, one per acceptance criterion; red: the client's baseline, green: this pipeline, dashed line: the criterion)* AC1 (mean false-discovery proportion) and AC2 (share of worlds in which the look-ahead signal is published) are *lower is better*; AC3 (mean lower end of the 95% interval for the combined forecast's gain over the market, in units of $10^{-4}$) and AC4 (share of worlds in whic"
+    "caption": "The certified pipeline meets AC1-AC4 (AC4 with the revised 12-season horizon; as written, at 3,690 games, it is not met by either pipeline); the naive pipeline fails AC1, AC2 and AC4."
   }
 ]

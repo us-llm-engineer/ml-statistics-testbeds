@@ -2,9 +2,9 @@
 
 | Notebook | Shows | Runtime (cold cache) |
 |---|---|---|
-| [`01_research_foundations.ipynb`](01_research_foundations.ipynb) | Derives and Monte-Carlo-verifies every guarantee the pipeline relies on. | ~40 s |
+| [`01_research_foundations.ipynb`](01_research_foundations.ipynb) | Derives and Monte-Carlo-verifies every guarantee the pipeline relies on. | ~20 s (16 cores) |
 | [`02_mock_project_part1_build.ipynb`](02_mock_project_part1_build.ipynb) | The project brief, the synthetic-data simulator, the naive baseline and its audit. | ~70 s |
-| [`03_mock_project_part2_prove_screen_combine.ipynb`](03_mock_project_part2_prove_screen_combine.ipynb) | The certified registry, combiner, monitor, money view and scorecard. | ~5.5 min |
+| [`03_mock_project_part2_prove_screen_combine.ipynb`](03_mock_project_part2_prove_screen_combine.ipynb) | The certified registry, combiner, monitor, money view and scorecard. | ~15 s (12 cloud cores), ~15 min (1 core) |
 
 See the portfolio root [`README.md`](../../README.md#sports-betting-edge) for the papers, the key results table and every figure embedded with a caption;
 this file is a per-notebook table of contents.
@@ -24,7 +24,7 @@ this file is a per-notebook table of contents.
   a simulation built to test its theorems.
 - **Composition** (derived here). Feeds stopped e-processes from 40 dependent signals into e-LOND, and a confidence sequence around a calibeated
   forecast — the exact pipeline Notebooks 2 and 3 run at project scale.
-- 57 self-checks, all met.
+- 58 self-checks, all met. An earlier version of this notebook had the confidence sequence's tuning constant inverted (found by the reproduction in Notebook 4); it is fixed and all checks were re-run.
 
 ## 02 — Mock project, part 1: build
 
@@ -42,16 +42,22 @@ this file is a per-notebook table of contents.
 - **Prove.** A confidence sequence and e-process per signal against the de-margined market; the cost of proof (games needed until the interval excludes
   zero) by signal class.
 - **Screen.** A two-stage registry (a backtest shortlist, confirmed on live seasons where the look-ahead bug is absent) driven by e-LOND; this is what
-  takes AC1's false-discovery proportion to 0.000 and AC2's look-ahead publication rate to 0 of 200 worlds.
+  takes AC1's false-discovery proportion to 0.000 and AC2's look-ahead publication rate to 0 of 200 worlds, at a power cost (about 35% of real edges after 12 live seasons).
 - **Combine.** A Hedge pool over the market and the certified signals, evaluated on fresh seasons the registry never saw; clears AC3, while calibeating
   the market alone does not recover the planted mispricing at this data size.
-- **Monitor.** No valid test flags the decaying edge within the AC4 target (3,690 games) — the notebook reports the achievable detection-time
+- **Monitor.** (Section 6b also tests twelve non-valid fixed-checkpoint z-test monitors against the written AC4: none meets it.) No valid test flags the decaying edge within the AC4 target (3,690 games; the full-history confidence sequence flags 2.5% of worlds by then and 57% within 12 seasons) — the notebook reports the achievable detection-time
   distribution instead of loosening the criterion — and demonstrates the restart trap: retesting from a data-chosen start inflates false alarms on
   stable edges.
 - **Money and the picks feed** (derived here). Brier gain converted to expected ROI at margined odds; a sample picks table built only from certified
   signals.
-- **The scorecard.** AC1–AC4 computed by code for both the naive baseline and this pipeline: AC1–AC3 met, AC4 not met by either pipeline.
+- **The scorecard.** AC1–AC4 computed by code for both the naive baseline and this pipeline: AC1–AC4 met by the certified pipeline, with AC4 judged on a revised 12-season horizon; AC4 as written (3,690 games) is not met by either pipeline, and the scorecard prints both.
 - 29 self-checks, all met, plus one reported finding (calibeating the market alone does not recover the planted mispricing).
+
+## 04 — Paper reproductions
+
+- **Choe and Ramdas, MLB 2010 to 2019.** Table 4a (4 of 4 forecasters within 4.8e-6), Figure 11 (10 of 10 intervals), the e-value 2979.0 and the first zero-crossing at game 9,891 all match the paper; the e-process and confidence-sequence crossings coincide, as the duality requires. The data file is downloaded at run time, not stored here.
+- **Xu and Ramdas, Figure 2.** FDR control and e-LOND at least as powerful as r-LOND are reproduced. The crossover with LORD* is not reproduced at the paper's own mu1 of 2.5 and 3 (every method reaches power 1.00 with the stated Beta shape, and the non-null proportion is not stated in the paper); in an added regime with smaller mu1, where power is in the paper's range, it is reproduced (e-LOND overtakes LORD* by L = 250). 100 trials per setting instead of 500.
+- 10 self-checks: 9 met, 1 not met.
 
 ## Limitations
 

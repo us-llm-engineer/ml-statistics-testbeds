@@ -386,7 +386,7 @@ fooling yourself: a subscription betting business has 40 candidate signals (refe
 recent form), a folder of backtests that all look good, and no way to tell which edges are real, which are luck, and
 which are bugs.
 
-Three notebooks, in order:
+Four notebooks, in order:
 
 1. **`sports-betting-edge/notebooks/01_research_foundations.ipynb`** -- derives and Monte-Carlo-verifies every
    guarantee the pipeline relies on: anytime-valid confidence sequences and e-processes (Choe and Ramdas), online
@@ -398,11 +398,15 @@ Three notebooks, in order:
    pipeline over 200 simulated worlds.
 3. **`sports-betting-edge/notebooks/03_mock_project_part2_prove_screen_combine.ipynb`** -- a two-stage certified
    registry, a combined forecaster, a decay monitor, a money view, and a scorecard against all four criteria.
+4. **`sports-betting-edge/notebooks/04_paper_reproductions.ipynb`** -- re-runs the two papers that have experiments
+   against their own published numbers: the Choe and Ramdas MLB analysis and the Xu and Ramdas local-dependence
+   simulation.
 
-The short version of why this is more than a demo: the naive pipeline's false-discovery proportion is 18.7% against
+The short version of why this is more than a demo: the naive pipeline's false-discovery proportion is 18.9% against
 a 10% target and it publishes the look-ahead bug in 95.5% of worlds, the certified two-stage registry drives both to
-essentially zero at a real cost in power, and no valid monitor can flag a decaying edge as fast as the client wants
--- the notebook reports that honestly instead of loosening the bar.
+zero at a real cost in power, and no valid monitor can flag a decaying edge as fast as the client wants -- the
+notebook reports the criterion as written (not met) next to a revised, disclosed horizon (met) instead of hiding either. The confidence-sequence code was checked against the
+papers' own numbers (below); that check exposed and fixed a tuning-constant bug, and Notebooks 1 and 3 were re-run.
 
 ### Papers
 
@@ -421,50 +425,85 @@ acceptance criteria, computed by code from 200 simulated worlds:
 
 | Acceptance criterion | Naive pipeline (screen at p < 0.05, stack winners) | Certified pipeline (this project) |
 |---|---|---|
-| **AC1**: false-discovery proportion among published signals <= 10% | 0.187, **not met** | 0.000, **met** |
-| **AC2**: the look-ahead signal is published in <= 1% of worlds | 95.5% of worlds, **not met** | 0 of 200 worlds (Wilson upper bound 1.9%, so 200 worlds cannot show the 1% bound tightly) |
-| **AC3**: the combined forecast is not worse than the market by a valid interval (lower end >= -5e-4) | met | met |
-| **AC4**: a decaying edge is flagged within 3,690 games with <= 5% false alarms | not met | **not met** |
+| **AC1**: false-discovery proportion among published signals <= 10% | 0.189, **not met** | 0.000, **met** |
+| **AC2**: the look-ahead signal is published in <= 1% of worlds | 95.5% of worlds, **not met** | 0 of 200 worlds (Wilson upper bound 1.9%, so 200 worlds cannot show the 1% bound tightly), **met** |
+| **AC3**: the combined forecast is not worse than the market by a valid interval (lower end >= -5e-4) | mean lower end -1.55e-4, **met** | mean lower end -0.93e-4, **met** |
+| **AC4** (revised horizon): a decaying edge is flagged within 14,760 games (12 seasons) in at least half of worlds, with <= 5% false alarms | flagged 0.730, but false alarms 0.121, **not met** | flagged 0.570 (95% Wilson interval 0.501 to 0.637), false alarms 0.0006, **met** |
+
+**AC4 as written in Notebook 2 (within 3,690 games, three seasons) is not met by either pipeline**: the naive dashboard flags 0.210 of worlds (with 12.1% false alarms) and the certified monitor 0.025. That horizon sits at the ceiling of what
+even an oracle fixed-time test can reach (its z-statistic after 3,690 games is about 1.6, so it would flag about half of the worlds), which is why a monitor that must stay valid cannot meet it. It is not only a validity problem:
+Notebook 3 (section 6b) also tries twelve fixed-checkpoint z-test monitors with no anytime guarantee, and none meets the written criterion on the 200 audit worlds. The closest flags 0.535 of the worlds but raises false alarms on 5.9% of the genuine
+edges (allowance 5%), and the one that stays inside the allowance with the most detection flags 0.385, so detecting the decay within three seasons costs more false alarms than the criterion allows. The revised horizon is the 12 seasons of the
+certification window. It was **not** chosen blind, and the order matters: the design constants were compared on prototype worlds disjoint from the audit; a first 200-world audit with the previous monitor level flagged 0.480 within
+the revised horizon (not met); because that monitor's false-alarm rate was 0.06% against a 5% allowance, its level was raised to the full one-sided 5% (still an anytime-valid test), checked on 60 further prototype worlds, and the audit was
+re-run once, which is the result in the table. The confidence-sequence constant `v_opt` was likewise re-chosen (0.3 to 10) on prototype worlds after the tuning-map fix described below.
+
+### Paper reproductions
+
+Notebook 4 re-runs the papers' own experiments and compares the printed numbers with the papers'. Tolerances were fixed before the comparison.
+
+| Paper result | Paper | This repository | Verdict |
+|---|---|---|---|
+| Choe and Ramdas, Table 4a: Brier confidence sequence, FiveThirtyEight minus Vegas, MLB 2010 to 2019 (25,165 games) | (-0.00265, -0.00061) | (-0.00265, -0.00061); all four forecasters within 4.8e-6 | **met** |
+| Choe and Ramdas, Figure 11: ten pairwise intervals | printed to 3 decimals | 10 of 10 within tolerance | **met** |
+| Choe and Ramdas, e-value that Vegas is at least as good as FiveThirtyEight | 2979 | 2979.0 | **met** |
+| Choe and Ramdas, first time the interval excludes zero | t >= 10,000 | t = 9,891 (the e-process crosses 40 at the same game, as the duality requires) | **met** |
+| Xu and Ramdas, Figure 2: FDR of e-LOND, r-LOND and LORD* at most alpha = 0.3 | yes | max FDR 0.195 over all 20 settings | **met** |
+| Xu and Ramdas, Figure 2: e-LOND at least as powerful as r-LOND | yes | equal at the paper's mu1 (both saturate at 1.00); ahead where power is not saturated (0.23 vs 0.12 at mu1 = 1.0, 0.90 vs 0.81 at mu1 = 1.5) | **met** |
+| Xu and Ramdas, Figure 2: e-LOND overtakes LORD* at large lag (L >= 250), at the paper's stated mu1 = 3 | yes | **not reproduced**: both reach power 1.00 at every lag, so there is nothing to overtake | **not met** |
+| Same crossover in the regime where power is in the paper's range (mu1 = 1.5, an added regime) | yes | LORD* ahead at L = 0 (0.980 vs 0.899); e-LOND ahead at L = 250 (0.894 vs 0.880) and L = 500 (0.897 vs 0.810) | **met** |
+
+The reproduction found a real bug in this repository's first version: the confidence sequence's tuning constant was inverted, which made every interval
+too wide (0 of 14 MLB comparisons matched). After the fix all 14 match. The Xu and Ramdas simulation is only partly specified in the paper (the non-null
+proportion and the copula details are not stated), and with its stated Beta shape and mu1 of 2.5 or 3 the data are so informative that the e-value methods
+saturate, so the paper's power of 0.3 to 0.8 cannot appear. The crossover was therefore also tested at smaller mu1 (1.0 and 1.5), where power lies in that range; that regime
+was added after the saturated run, and both results are reported. The run used 100 trials per setting (the paper: 500).
 
 What the numbers say, including the parts that do not flatter the method:
 
 - **A plain backtest is fooled by the bug.** The naive screen publishes the look-ahead signal in 95.5% of worlds; even a single-stage e-LOND on the same backtest
-  publishes it in 46% (its forecasts are not predictable, so the guarantee is void). Confirming shortlisted signals on live seasons, where the bug is absent,
-  publishes it in 0 of 200 worlds.
-- **Guarantees cost data.** The certified registry publishes about 2 signals per world and finds about 31% of the real edges after 12 live seasons. Among the worlds
-  where an edge is proven at all, the largest edge takes a median of about 9,000 live games and the smallest about 17,000 (a reference point: the 2024 paper's
-  baseball comparison used 25,165 games).
-- **Safe is not the same as best.** The naive stack earns a larger Brier gain on fresh seasons (+18.0e-4) than the certified combiner (+8.1e-4), but it carries no
-  guarantee and no protection against the bug. Calibeating the market on its own does *not* recover the planted longshot mispricing at this data size (rounding
-  to the bin grid and the learning cost outweigh it).
-- **AC4 is out of reach for any valid monitor here.** Three seasons (3,690 games) after the decay begins the test statistic is only about 1.6, so even an oracle fixed-time 5% test would detect it in only about half of the worlds. The
-  notebook reports the distribution of games needed instead of loosening the criterion, and shows the trap: restarting a test at a data-chosen point raises false
-  alarms from 13% to 74% for a plain z-test dashboard.
+  publishes it in 49.5% with a flat discount sequence (12.5% with the paper's default), because its forecasts are not predictable and the guarantee is void.
+  Confirming shortlisted signals on live seasons, where the bug is absent, publishes it in 0 of 200 worlds.
+- **Guarantees cost data.** The certified registry publishes about 2.4 signals per world and finds about 35% of the real edges after 12 live seasons (14,760 games).
+  Among the worlds where an edge is proven at all, the strongest edge takes a median of about 8,300 live games and the weakest about 13,300 (a reference point: the
+  2024 paper's baseball comparison used 25,165 games).
+- **Safe is not the same as best.** The naive stack earns a larger Brier gain on fresh seasons (+18.0e-4) than the certified combiner (+8.4e-4), but it carries no
+  guarantee and no protection against the bug. Calibeating the market on its own does *not* recover the planted longshot mispricing at this data size (-3.05e-4 against
+  an oracle gain of +0.71e-4: rounding to the bin grid and the learning cost outweigh it).
+- **AC4 is out of reach as written, and reachable only slowly.** Three seasons (3,690 games) after the decay begins the test statistic is only about 1.6, so even an oracle fixed-time 5% test would detect it in only about half of the worlds.
+  The full-history confidence sequence flags 57% of worlds within 12 seasons (median about 12,400 games among the worlds that flag, 89% eventually) with almost no false alarms. The
+  notebook shows the trap that a faster rule falls into: restarting a test at a data-chosen point raises false alarms from 13% to 74% for a plain z-test dashboard.
 - **A Brier win is not profit.** A sub-vig edge has a real Brier gain and a negative expected return if followed in every game at margined odds (-1.96%).
 
 ### Figures
 
-8 of the 18 plots rendered across the three executed notebooks, chosen for what they show about the pipeline as a whole; each caption is condensed from
-the notebook's own "How to read this chart" text. All are simulation results (synthetic data).
+8 of the plots rendered across the four executed notebooks, chosen for what they show about the pipeline as a whole; each caption is condensed from
+the notebook's own "How to read this chart" text. All are simulation results (synthetic data) except the MLB reproduction, which re-analyses public data.
 
 **Notebook 1 -- Research foundations** ([`sports-betting-edge/notebooks/01_research_foundations.ipynb`](sports-betting-edge/notebooks/01_research_foundations.ipynb))
 
 | | |
 |---|---|
-| ![Family-wise false-positive chance; Selection inflates the best statistic](sports-betting-edge/figures/nb1-01-multiplicity.png)<br><sub>With K null signals, the chance of at least one false positive at p<0.05 climbs to 87% by K=40; the best of K statistics grows like sqrt(2 ln K), not 1.96 -- why a plain backtest across 40 signals is not trustworthy.</sub> | ![e-LOND FDR under three dependence structures; Worst case: the guarantee is sharp; Power at alpha=0.1: e-LOND dominates](sports-betting-edge/figures/nb1-04-elond-fdr.png)<br><sub>e-LOND keeps FDR below alpha under independent, banded and adversarial dependence, and reaches the theoretical worst case (alpha * sum gamma_i) exactly on the Appendix C construction.</sub> |
+| ![e-LOND FDR under three dependence structures [toy]; Worst case: the guarantee is sharp [toy, derived from App. C]; Power at alpha=0.1: e-LOND dominates [toy]](sports-betting-edge/figures/nb1-04-elond-fdr.png)<br><sub>e-LOND keeps FDR below alpha under independent, banded and adversarial dependence, and reaches the theoretical worst case (alpha * sum gamma_i) exactly on the Appendix C construction.</sub> |  |
 
 **Notebook 2 -- Mock project, part 1: build** ([`sports-betting-edge/notebooks/02_mock_project_part1_build.ipynb`](sports-betting-edge/notebooks/02_mock_project_part1_build.ipynb))
 
 | | |
 |---|---|
-| ![Planted longshot mispricing (derived here); What a plain backtest sees: the look-ahead bug ranks first](sports-betting-edge/figures/nb2-01-simulator.png)<br><sub>The simulator plants a small longshot mispricing and a look-ahead bug; a plain backtest ranks the buggy signal first, ahead of every real edge.</sub> | ![Naive pipeline: false-discovery proportion per world; What the naive registry contains (average world); Power by class (95% bootstrap intervals over worlds); ROI optimism, one dot per world](sports-betting-edge/figures/nb2-04-baseline-audit.png)<br><sub>Over 200 simulated worlds the naive screen's false-discovery proportion sits at 18.7% against a 10% target, and publishes the look-ahead signal almost every time.</sub> |
+| ![Planted longshot mispricing (derived here); What a plain backtest sees: the look-ahead bug ranks first](sports-betting-edge/figures/nb2-01-simulator.png)<br><sub>The simulator plants a small longshot mispricing and a look-ahead bug; a plain backtest ranks the buggy signal first, ahead of every real edge.</sub> | ![Naive pipeline: false-discovery proportion per world; What the naive registry contains (average world); Power by class (95% bootstrap intervals over worlds); ROI optimism, one dot ](sports-betting-edge/figures/nb2-04-baseline-audit.png)<br><sub>Over 200 simulated worlds the naive screen's false-discovery proportion sits at 18.7% against a 10% target, and publishes the look-ahead signal almost every time.</sub> |
 
 **Notebook 3 -- Mock project, part 2: prove, screen, combine** ([`sports-betting-edge/notebooks/03_mock_project_part2_prove_screen_combine.ipynb`](sports-betting-edge/notebooks/03_mock_project_part2_prove_screen_combine.ipynb))
 
 | | |
 |---|---|
 | ![Genuine edge (form_02): the CS brackets the truth; Look-ahead signal (form_16): void on the backtest; The e-process view of the same evidence](sports-betting-edge/figures/nb3-01-prove-showcase.png)<br><sub>A confidence sequence proves a genuine edge within a live season while the look-ahead signal's interval never separates from zero once the bug is absent.</sub> | ![AC1: false discoveries among published signals; AC2: the look-ahead signal; The price of the guarantee: power by class; Two-stage registry: power against the live horizon](sports-betting-edge/figures/nb3-03-screen-registry.png)<br><sub>The two-stage registry (backtest shortlist, live-season confirmation) drives the false-discovery proportion to zero and keeps the look-ahead signal out, at a cost in power.</sub> |
-| ![Time to flag the decaying edge (200 worlds); The restart trap: false alarms on a stable edge; Decaying signal (form_05), showcase world](sports-betting-edge/figures/nb3-05-monitor.png)<br><sub>No valid monitor flags the decaying edge within the 3,690-game target; restarting a test at a data-chosen point inflates false alarms on stable edges.</sub> | ![AC1: false-discovery proportion; AC2: look-ahead signal published; AC3: CS lower end of the combined forecast; AC4: decay flagged in 3,690 games](sports-betting-edge/figures/nb3-07-scorecard.png)<br><sub>The certified pipeline meets AC1-AC3 where the naive pipeline fails them; AC4 is not met by either, because no valid test can detect the decay in time.</sub> |
+| ![Time to flag the decaying edge (200 worlds); The restart trap: false alarms on a stable edge; Decaying signal (form_05), showcase world](sports-betting-edge/figures/nb3-05-monitor.png)<br><sub>No valid monitor flags the decaying edge within the 3,690-game target; the full-history confidence sequence flags 57% of worlds within 12 seasons, and restarting a test at a data-chosen point inflates false alarms on stable edges.</sub> | ![AC1: false-discovery proportion; AC2: look-ahead signal published; AC3: CS lower end of the combined forecast; AC4: decay flagged in 3,690 games](sports-betting-edge/figures/nb3-07-scorecard.png)<br><sub>The certified pipeline meets AC1-AC4 (AC4 with the revised 12-season horizon; as written, at 3,690 games, it is not met by either pipeline); the naive pipeline fails AC1, AC2 and AC4.</sub> |
+
+**Notebook 4 -- Paper reproductions** ([`sports-betting-edge/notebooks/04_paper_reproductions.ipynb`](sports-betting-edge/notebooks/04_paper_reproductions.ipynb))
+
+| | |
+|---|---|
+| ![Choe and Ramdas MLB reproduction: confidence sequence for 538 minus Vegas; ten pairwise intervals against the paper](sports-betting-edge/figures/nb4-01-mlb-reproduction.png)<br><sub>Left: the 95% confidence sequence for FiveThirtyEight minus Vegas on 25,165 MLB games separates from zero at game 9,891 (paper: about 10,000). Right: all ten pairwise intervals against the paper's printed values.</sub> |  |
 
 <details>
 <summary>Layout &amp; running it</summary>
@@ -475,8 +514,10 @@ sports-betting-edge/
 │   ├── 01_research_foundations.ipynb
 │   ├── 02_mock_project_part1_build.ipynb
 │   ├── 03_mock_project_part2_prove_screen_combine.ipynb
+│   ├── 04_paper_reproductions.ipynb
 │   └── README.md            # notebook-by-notebook synopsis, text-only
 ├── figures/                 # 8 PNGs embedded above, plus captions.json
+├── results/PROVENANCE.md    # where each notebook was executed
 ├── requirements.txt
 └── README.md                # text-only project notes; papers/results/figures are here instead
 ```
@@ -487,13 +528,13 @@ python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 python -m ipykernel install --user --name edgelab --display-name "Python (edgelab)"
 cd notebooks
-for nb in 01_research_foundations 02_mock_project_part1_build 03_mock_project_part2_prove_screen_combine; do
+for nb in 01_research_foundations 02_mock_project_part1_build 03_mock_project_part2_prove_screen_combine 04_paper_reproductions; do
   jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.kernel_name=edgelab \
     --ExecutePreprocessor.timeout=3600 "$nb.ipynb"
 done
 ```
 
-All data here is synthetic -- there is no real bet, odds feed, or sportsbook data anywhere in this project, and no
-API key is needed at all.
+Notebooks 1 to 3 use only synthetic data -- there is no real bet, odds feed, or sportsbook data in them. Notebook 4 downloads one public research
+file (MLB game forecasts from the Choe and Ramdas authors' repository) at run time and does not store it. No API key is needed anywhere.
 
 </details>
